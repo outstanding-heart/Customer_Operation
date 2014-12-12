@@ -3,7 +3,6 @@
 # File name: Class.py
 # Author: Lee.HJ
 
-import Include
 import Operate
 
 class Customer(object):
@@ -69,7 +68,7 @@ class Customer(object):
 			#	print "Phone: %s" % self.SearchInfo[0][2]
 			#	print "Email:%s" % self.SearchInfo[0][3]
 		else:
-			print "No finding with ID = %s! Please try again!" % self.DeleteID
+			print "No finding with ID = %s! Please try again!" % DeleteID
 	
 	def ShowID(self):
 		return self.ID
@@ -134,6 +133,9 @@ class Group(Customer):
 	def SearchInLinkman(self, ID):
 		self.Linkman.Search(ID)
 	
+	def DeleteLinkman(self, ID):
+		self.Linkman.Delete(ID)
+
 	def ShowAllLinkman(self):
 		self.Search(0)
 
