@@ -3,8 +3,11 @@
 # File name: Operate.py
 # Author: Lee.HJ
 
-import Include
+import sys, string, os
 import MySQLdb
+from warnings import filterwarnings 
+
+filterwarnings('error', category = MySQLdb.Warning)
 
 #***********************  Search  **************************
 
@@ -17,14 +20,19 @@ def Search(ID, Table): #  2
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	#Search ID in Table
+	sql_Search = None
 
-	sql_Search = "Select *from %s where (ID = '%s')" % (Table, ID)
+	if ID == 0:  #Search all linkman information
+		sql_Search = "Select *from %s" % Table
+	else:
+		sql_Search = "Select *from %s where (ID = '%s')" % (Table, ID)
+	
 	cursor.execute(sql_Search)
 	sql_Info = cursor.fetchall()
 	
@@ -46,7 +54,7 @@ def Delete(ID, Table): #  3
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
@@ -96,7 +104,7 @@ def NextID(Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 	
 	#
 	cursor = conn.cursor()
@@ -109,7 +117,7 @@ def NextID(Table):
 	if ID[0][0] == None:
 		NextID = 1
 	else:
-		NextID = ID[0][0] + 1
+		NextID = int(ID[0][0]) + 1
 	
 	return NextID
 
@@ -123,15 +131,18 @@ def Personal_Create(Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key, Name varchar(10), Phone varchar(20), Email varchar(20))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
@@ -146,13 +157,13 @@ def Personal_Add(ID, Name, Phone, Email, Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	sql_insert = "Insert into %s values ('%d', '%s', '%s', '%s')" % (Table, ID, Name, Phone, Email)
-	print sql_insert
+	#print sql_insert
 	try:
 		cursor.execute(sql_insert)
 		Return = 1
@@ -178,15 +189,18 @@ def Group_Create(Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key, Linkman_table varchar(10))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
@@ -200,7 +214,7 @@ def Group_Add(ID, Table, Linkman_Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
@@ -232,15 +246,18 @@ def Linkman_Create(Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key,Name varchar(10),Phone varchar(20),Email varchar(20),O_Phone varchar(20),Position varchar(20))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
@@ -254,14 +271,14 @@ def Linkman_Add(ID, Name, Phone, Email, OfficialPhone, Position, Table):
 	except Exception, e:
 		print e
 		sys.exit()
-	print "Connect MySQL success!"	
+	#print "Connect MySQL success!"	
 
 	#Cursor
 	cursor = conn.cursor()
 	
 	#Insert information
 	sql_insert = "Insert into %s values ('%d','%s','%s','%s','%s','%s')" % (Table, ID, Name, Phone, Email, OfficialPhone, Position)
-	print sql_insert
+	#print sql_insert
 	try:
 		cursor.execute(sql_insert)
 		Return = 1
@@ -277,9 +294,4 @@ def Linkman_Add(ID, Name, Phone, Email, OfficialPhone, Position, Table):
 	return Return
 	
 	
-	
-
-
-
-
 
