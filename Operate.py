@@ -5,6 +5,9 @@
 
 import Include
 import MySQLdb
+from warnings import filterwarnings 
+
+filterwarnings('error', category = MySQLdb.Warning)
 
 #***********************  Search  **************************
 
@@ -135,8 +138,11 @@ def Personal_Create(Table):
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key, Name varchar(10), Phone varchar(20), Email varchar(20))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
@@ -190,8 +196,11 @@ def Group_Create(Table):
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key, Linkman_table varchar(10))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
@@ -244,8 +253,11 @@ def Linkman_Create(Table):
 	
 	#Create table
 	sql_create = "Create table if not exists %s(ID int(10) primary key,Name varchar(10),Phone varchar(20),Email varchar(20),O_Phone varchar(20),Position varchar(20))" % Table
-	cursor.execute(sql_create)
-	
+	try:
+		cursor.execute(sql_create)
+	except MySQLdb.Warning:
+		pass
+
 	conn.commit()
 	
 	cursor.close()
