@@ -15,47 +15,42 @@ class Customer(object):
 		pass
 
 	# Search information and show it
-	def Search(self):
-		self.SearchID = raw_input("Please put into ID you want to search:")
-		self.SearchInfo = Operate.Search(self.SearchID, self.Table)#  2
+	def Search(self, ID):
+		self.SearchID = ID
+		if ID == 0:
+			Table = self.Linkman_Table
+		else:
+			Table = self.Table
+
+		self.SearchInfo = Operate.Search(self.SearchID, Table)#  2
 		
 		if self.SearchInfo:
 			for info in self.SearchInfo:
-			#	try:
-			#		print "Information:"
-			#		print "Id: %s" % self.ID = self.SearchInfo[0][0]
-			#		print "Name: %s" % self.Name = self.SearchInfo[0][1]
-			#		print "Phone: %s" % self.Phone = self.SearchInfo[0][2]
-			#		print "Email:%s" % self.Email = self.SearchInfo[0][3]
-			#		print "Official Phone: %s" % self.Official_Phone = self.SearchInfo[0][4]
-			#		print "Position: %s" % self.Position = self.SearchInfo[0][5]
-			#	except IndexError:
-			#		pass
 
-				self.ID = int(self.SearchInfo[0][0])
+				self.ID = int(info[0])
 				print "Id: %d" % self.ID
 
-				Len =  len(self.SearchInfo[0])
+				Len =  len(info)
 
 				#Group
 				if Len == 2:
-					self.Linkman_Table = self.SearchInfo[0][1]
+					self.Linkman_Table = info[1]
 					print "Linkman_Table: %s" % self.Linkman_Table
 					self.Linkman = Linkman(self.Linkman_Table)
 
 				# Personal
 				else:
-					self.Name = self.SearchInfo[0][1]
-					self.Phone = self.SearchInfo[0][2]
-					self.Email = self.SearchInfo[0][3]
+					self.Name = info[1]
+					self.Phone = info[2]
+					self.Email = info[3]
 					print "Name: %s" % self.Name
 					print "Phone: %s" % self.Phone
 					print "Email:%s" % self.Email
 
 				# Linkman
 				if Len == 6:
-					self.Official_Phone = self.SearchInfo[0][4]
-					self.Position = self.SearchInfo[0][5]
+					self.Official_Phone = info[4]
+					self.Position = info[5]
 					print "Official Phone: %s" % self.Official_Phone
 					print "Position: %s" % self.Position
 		else:
@@ -143,8 +138,7 @@ class Group(Customer):
 		self.Linkman.Search()
 	
 	def ShowAllLinkman(self):
-		for Id in range(Operate.NextID(self.Linkman.Table)):
-			Operate.Search(Id, self.Linkman.Table)
+		self.Search(0)
 
 
 class Linkman(Personal):

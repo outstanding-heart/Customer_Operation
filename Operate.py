@@ -23,8 +23,13 @@ def Search(ID, Table): #  2
 	cursor = conn.cursor()
 	
 	#Search ID in Table
+	sql_Search = None
 
-	sql_Search = "Select *from %s where (ID = '%s')" % (Table, ID)
+	if ID == 0:  #Search all linkman information
+		sql_Search = "Select *from %s" % Table
+	else:
+		sql_Search = "Select *from %s where (ID = '%s')" % (Table, ID)
+	
 	cursor.execute(sql_Search)
 	sql_Info = cursor.fetchall()
 	
